@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace ChestShop;
 
 use pocketmine\block\Block;
+use ErrorException;
 
 class DatabaseManager
 {
@@ -29,6 +30,11 @@ class DatabaseManager
 					chestZ INTEGER NOT NULL
 		)";
 		$this->database->exec($sql);
+		try {
+            $this->database->exec("ALTER TABLE ChestShop ADD flag INTEGER");
+        } catch (ErrorException $e) {
+		    //すでにカラムが存在している場合
+        }
 	}
 
 	/**
@@ -41,13 +47,15 @@ class DatabaseManager
 	 * @param int $productMeta
 	 * @param Block $sign
 	 * @param Block $chest
+     * @param bool $flag
 	 * @return bool
 	 */
-	public function registerShop($shopOwner, $saleNum, $price, $productID, $productMeta, $sign, $chest) : bool
+	public function registerShop($shopOwner, $saleNum, $price, $productID, $productMeta, $sign, $chest, $flag = false) : bool
 	{
-		return $this->database->exec("INSERT OR REPLACE INTO ChestShop (id, shopOwner, saleNum, price, productID, productMeta, signX, signY, signZ, chestX, chestY, chestZ) VALUES
+        $flag = $flag ? 1 : "null";
+		return $this->database->exec("INSERT OR REPLACE INTO ChestShop (id, shopOwner, saleNum, price, productID, productMeta, signX, signY, signZ, chestX, chestY, chestZ, flag) VALUES
 			((SELECT id FROM ChestShop WHERE signX = $sign->x AND signY = $sign->y AND signZ = $sign->z),
-			'$shopOwner', $saleNum, $price, $productID, $productMeta, $sign->x, $sign->y, $sign->z, $chest->x, $chest->y, $chest->z)");
+			'$shopOwner', $saleNum, $price, $productID, $productMeta, $sign->x, $sign->y, $sign->z, $chest->x, $chest->y, $chest->z, $flag)");
 	}
 
 	/**
