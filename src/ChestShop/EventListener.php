@@ -175,7 +175,7 @@ class EventListener implements Listener
 
 		$sign = $event->getBlock();
 
-		$flag = $event->getLine(0) === "enchant";
+		$flag = $event->getPlayer()->isOp() && $event->getLine(0) === "enchant";
 
 		// Check sign format...
 		if ($event->getLine(0) !== "" && !$flag) return;
