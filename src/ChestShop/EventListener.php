@@ -175,8 +175,10 @@ class EventListener implements Listener
 
 		$sign = $event->getBlock();
 
+		$flag = $event->getLine(0) === "enchant";
+
 		// Check sign format...
-		if ($event->getLine(0) !== "") return;
+		if ($event->getLine(0) !== "" && !$flag) return;
 		if (!is_numeric($saleNum) or $saleNum <= 0) return;
 		if (!is_numeric($price) or $price < 0) return;
 		if ($pID === false) return;
@@ -195,7 +197,7 @@ class EventListener implements Listener
 					$event->setLine(2, "Price: ".EconomyAPI::getInstance()->getMonetaryUnit().$price);
 					$event->setLine(3, $productName);
 
-					$this->databaseManager->registerShop($shopOwner, $saleNum, $price, $pID, $pMeta, $sign, $chest);
+					$this->databaseManager->registerShop($shopOwner, $saleNum, $price, $pID, $pMeta, $sign, $chest, $flag);
 					return;
 				}
 			}
@@ -212,7 +214,7 @@ class EventListener implements Listener
 		$event->setLine(2, "Price: ".EconomyAPI::getInstance()->getMonetaryUnit().$price);
 		$event->setLine(3, $productName);
 
-		$this->databaseManager->registerShop($shopOwner, $saleNum, $price, $pID, $pMeta, $sign, $chest);
+		$this->databaseManager->registerShop($shopOwner, $saleNum, $price, $pID, $pMeta, $sign, $chest, $flag);
 	}
 
 	private function getSideChest(Position $pos)
