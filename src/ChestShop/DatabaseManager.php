@@ -47,7 +47,7 @@ class DatabaseManager
 	 * @param int $productMeta
 	 * @param Block $sign
 	 * @param Block $chest
-     * @param bool $flag
+	 * @param bool $flag
 	 * @return bool
 	 */
 	public function registerShop($shopOwner, $saleNum, $price, $productID, $productMeta, $sign, $chest, $flag = false) : bool
