@@ -31,10 +31,10 @@ class DatabaseManager
 		)";
 		$this->database->exec($sql);
 		try {
-            $this->database->exec("ALTER TABLE ChestShop ADD flag INTEGER");
-        } catch (ErrorException $e) {
-		    //すでにカラムが存在している場合
-        }
+			$this->database->exec("ALTER TABLE ChestShop ADD flag INTEGER");
+		} catch (ErrorException $e) {
+			//すでにカラムが存在している場合
+		}
 	}
 
 	/**
@@ -52,7 +52,7 @@ class DatabaseManager
 	 */
 	public function registerShop($shopOwner, $saleNum, $price, $productID, $productMeta, $sign, $chest, $flag = false) : bool
 	{
-        $flag = $flag ? 1 : "null";
+		$flag = $flag ? 1 : "null";
 		return $this->database->exec("INSERT OR REPLACE INTO ChestShop (id, shopOwner, saleNum, price, productID, productMeta, signX, signY, signZ, chestX, chestY, chestZ, flag) VALUES
 			((SELECT id FROM ChestShop WHERE signX = $sign->x AND signY = $sign->y AND signZ = $sign->z),
 			'$shopOwner', $saleNum, $price, $productID, $productMeta, $sign->x, $sign->y, $sign->z, $chest->x, $chest->y, $chest->z, $flag)");

@@ -76,8 +76,8 @@ class EventListener implements Listener
 
 				$item = ItemFactory::get((int)$shopInfo['productID'], (int)$shopInfo['productMeta'], (int)$shopInfo['saleNum']);
 				if ($shopInfo['flag'] === null) {
-                    $chest->getInventory()->removeItem($item);
-                }
+					$chest->getInventory()->removeItem($item);
+				}
 				$player->getInventory()->addItem($item);
 				$sellerMoney = EconomyAPI::getInstance()->myMoney($shopInfo['shopOwner']);
 				if(EconomyAPI::getInstance()->reduceMoney($player->getName(), $shopInfo['price'], false, "ChestShop") === EconomyAPI::RET_SUCCESS and EconomyAPI::getInstance()->addMoney($shopInfo['shopOwner'], $shopInfo['price'], false, "ChestShop") === EconomyAPI::RET_SUCCESS) {
@@ -87,9 +87,9 @@ class EventListener implements Listener
 					}
 				}else{
 					$player->getInventory()->removeItem($item);
-                    if ($shopInfo['flag'] === null) {
-                        $chest->getInventory()->addItem($item);
-                    }
+					if ($shopInfo['flag'] === null) {
+						$chest->getInventory()->addItem($item);
+					}
 					EconomyAPI::getInstance()->setMoney($player->getName(), $buyerMoney);
 					EconomyAPI::getInstance()->setMoney($shopInfo['shopOwner'], $sellerMoney);
 					$player->sendMessage("Transaction Failed");
